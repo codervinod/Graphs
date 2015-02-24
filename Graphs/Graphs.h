@@ -58,6 +58,7 @@ public:
         std::cout<<"DFS Traversal at:"<<v<<std::endl;
         DFSutil(v,visited);
         std::cout<<std::endl;
+        delete [] visited;
     }
     
     void BFS(int v)
@@ -88,6 +89,7 @@ public:
             }
         }
         std::cout<<std::endl;
+        delete [] visited;
     }
     
 private:
@@ -105,6 +107,93 @@ private:
         
     }
     std::list<int> *_adj;
+};
+
+class AdjacencyMatrix: public Graph
+{
+public:
+    AdjacencyMatrix(int v):Graph(v)
+    {
+        _m = new int[v*v];
+        for(int i=0;i<(v*v);++i)
+            _m[i]=0;
+    }
+    
+    virtual ~AdjacencyMatrix()
+    {
+       if(_m)
+           delete []_m;
+    }
+    
+    void addEdge(int u,int v)
+    {
+        int id = (u*_v)+v;
+        _m[id] = 1;
+    }
+    
+    void DFS(int v)
+    {
+        bool *visited = new bool[_v];
+        for(int i=0;i<_v;++i)
+            visited[i] =false;
+        
+        std::cout<<"DFS Traversal at:"<<v<<std::endl;
+        
+        DFSutil(v,visited);
+        std::cout<<std::endl;
+        delete [] visited;
+    }
+    
+    void BFS(int v)
+    {
+        bool *visited = new bool[_v];
+        for(int i=0;i<_v;++i)
+            visited[i] =false;
+        
+        std::cout<<"BFS Traversal at:"<<v<<std::endl;
+        
+        std::queue<int> q;
+        q.push(v);
+        
+        visited[v] = true;
+        
+        while(!q.empty())
+        {
+            int c = q.front();
+            std::cout<<c<<"\t";
+            q.pop();
+            
+            int cr=c*_v;
+            for(int i=0;i<_v;++i)
+            {
+                int nextEdge = cr+i;
+                if(_m[nextEdge] && !visited[nextEdge])
+                {
+                    visited[nextEdge] = true;
+                    q.push(i);
+                }
+            }
+        }
+        std::cout<<std::endl;
+        delete [] visited;
+    }
+    
+private:
+    void DFSutil(int v,bool visited[])
+    {
+        visited[v] = true;
+        std::cout<<v<<"\t";
+        
+        int cr = v*_v;
+        for(int i=0;i<_v;++i)
+        {
+            int nextEdge = cr+i;
+            if(_m[nextEdge] && !visited[nextEdge])
+                DFSutil(i,visited);
+        }
+    }
+    int *_m;
+    
 };
 
 #endif
