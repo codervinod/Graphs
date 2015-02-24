@@ -7,9 +7,19 @@
 //
 
 #include <iostream>
+#include "Graphs.h"
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
+    
+    Graph *graph = new AdjacencyList(4);
+    graph->addEdge(0,1);
+    graph->addEdge(0,2);
+    graph->addEdge(1,2);
+    graph->addEdge(2,0);
+    graph->addEdge(2,3);
+    graph->addEdge(3,3);
+    
+    graph->DFS(2);
+    delete graph;
     return 0;
 }
