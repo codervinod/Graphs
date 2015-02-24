@@ -11,15 +11,18 @@
 
 int main(int argc, const char * argv[]) {
     
-    Graph *graph = new AdjacencyList(4);
+    Graph *graph = new AdjacencyList(7);
     graph->addEdge(0,1);
     graph->addEdge(0,2);
-    graph->addEdge(1,2);
-    graph->addEdge(2,0);
-    graph->addEdge(2,3);
-    graph->addEdge(3,3);
+    graph->addEdge(0,3);
     
-    graph->DFS(2);
+    graph->addEdge(1,4);
+    graph->addEdge(1,5);
+    graph->addEdge(1,6);
+    
+
+    graph->BFS(0);
+    graph->DFS(0);
     delete graph;
     return 0;
 }

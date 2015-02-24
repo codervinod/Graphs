@@ -12,6 +12,7 @@
 
 #include <vector>
 #include <list>
+#include <queue>
 
 class Graph
 {
@@ -30,12 +31,12 @@ class AdjacencyList: public Graph
 public:
     AdjacencyList(int v):Graph(v)
     {
-        _graph = new std::list<int>[v];
+        _adj = new std::list<int>[v];
     }
     virtual ~AdjacencyList()
     {
-        if(_graph)
-            delete [] _graph;
+        if(_adj)
+            delete [] _adj;
     }
     
     
@@ -44,8 +45,8 @@ public:
         if(u>=_v)
             return;
         
-        _graph[u].push_back(v);
-        _graph[v].push_back(u);
+        _adj[u].push_back(v);
+        _adj[v].push_back(u);
     }
     
     void DFS(int v)
@@ -61,7 +62,32 @@ public:
     
     void BFS(int v)
     {
+        bool *visited = new bool[_v];
+        for(int i=0;i<_v;++i)
+            visited[i] = false;
         
+        std::cout<<"BFS Traversal at:"<<v<<std::endl;
+        
+        std::queue<int> q;
+        q.push(v);
+        
+        visited[v] = true;
+        while(!q.empty())
+        {
+            int c = q.front();
+            q.pop();
+            std::cout<<c<<"\t";
+            for(std::list<int>::iterator itr = _adj[c].begin();
+                itr != _adj[c].end();++itr)
+            {
+                if(!visited[*itr])
+                {
+                    visited[*itr] = true;
+                    q.push(*itr);
+                }
+            }
+        }
+        std::cout<<std::endl;
     }
     
 private:
@@ -70,15 +96,15 @@ private:
     {
         visited[v] = true;
         std::cout<<v<<"\t";
-        for(std::list<int>::iterator itr = _graph[v].begin();
-            itr != _graph[v].end();++itr)
+        for(std::list<int>::iterator itr = _adj[v].begin();
+            itr != _adj[v].end();++itr)
         {
             if(!visited[*itr])
                 DFSutil(*itr,visited);
         }
         
     }
-    std::list<int> *_graph;
+    std::list<int> *_adj;
 };
 
 #endif
